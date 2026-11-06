@@ -1,11 +1,26 @@
 {% extends "base.html" %}
+{% block title %}Log in{% endblock %}
 
 {% block content %}
-<h2>Log in</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log in</button>
-</form>
-<p>No account? <a href="{% url 'signup' %}">Sign up</a></p>
+<div class="row justify-content-center py-3 py-lg-5">
+  <div class="col-md-8 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <span class="page-kicker">Welcome back</span>
+        <h1 class="h2 mt-2 mb-1">Log in</h1>
+        <p class="text-body-secondary mb-4">Pick up where your campus community left off.</p>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% include "registration/_forms_errors.html" %}
+          {% with field=form.username %}{% include "registration/_field.html" %}{% endwith %}
+          {% with field=form.password %}{% include "registration/_field.html" %}{% endwith %}
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Log in</button>
+        </form>
+      </div>
+      <div class="card-footer text-center bg-white py-3">
+        <span class="text-muted">New to CampusConnect?</span> <a class="text-brand fw-semibold" href="{% url 'signup' %}">Create an account</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

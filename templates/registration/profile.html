@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="row g-4 justify-content-center">
+  <div class="col-md-4 col-lg-3">
+    <div class="card shadow-sm text-center overflow-hidden">
+      <div class="p-4" style="background: #e7efe8;">
+        <span class="page-kicker">Your campus profile</span>
+      </div>
+      <div class="card-body p-4">
+        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 text-white shadow-sm fw-bold fs-2"
+             style="width: 80px; height: 80px; background: #245c50;">
+          {{ user.first_name|default:user.username|slice:":1"|upper }}
+        </div>
+        <h2 class="h5 mb-0 fw-bold">{{ user.get_full_name|default:user.username }}</h2>
+        <p class="text-muted small mb-2">@{{ user.username }}</p>
+        <span class="badge rounded-pill px-3 py-2" style="background: #245c50;">
+          <i class="bi bi-shield-check me-1"></i>{{ user.get_role_display|default:user.role|title }}
+        </span>
+      </div>
+      <ul class="list-group list-group-flush text-start small bg-transparent">
+        <li class="list-group-item d-flex justify-content-between py-3">
+          <span class="text-muted"><i class="bi bi-book me-2"></i>Course</span> 
+          <span class="fw-semibold">{{ user.course|default:"—" }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between py-3">
+          <span class="text-muted"><i class="bi bi-calendar-event me-2"></i>Joined</span> 
+          <span class="fw-semibold">{{ user.date_joined|date:"M j, Y" }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-8 col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-primary-subtle text-primary p-2 rounded-3 me-3">
+            <i class="bi bi-person-gear fs-4"></i>
+          </div>
+          <div>
+            <h1 class="h4 mb-0 fw-bold">Edit Profile</h1>
+            <p class="text-muted small mb-0">Update your contact and course details. Username and role are managed by the system.</p>
+          </div>
+        </div>
+        <hr class="text-muted opacity-25 mb-4">
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% include "registration/_forms_errors.html" %}
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">{% with field=form.first_name %}{% include "registration/_field.html" %}{% endwith %}</div>
+            <div class="col-md-6 mb-3">{% with field=form.last_name %}{% include "registration/_field.html" %}{% endwith %}</div>
+          </div>
+          <div class="mb-3">{% with field=form.email %}{% include "registration/_field.html" %}{% endwith %}</div>
+          <div class="mb-4">{% with field=form.course %}{% include "registration/_field.html" %}{% endwith %}</div>
+          
+          <button type="submit" class="btn btn-primary px-4 py-2 fw-semibold">
+            <i class="bi bi-check2-circle me-1"></i> Save Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
